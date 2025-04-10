@@ -1,7 +1,9 @@
 services:
   ## System calibration with given apriltag 3D coordinates
   systemcalib:
-    build: .
+    build:
+      context: .
+      dockerfile: systemcalib.Dockerfile
 
     # Mounted paths from the repo into the docker:
     volumes:
@@ -13,24 +15,34 @@ services:
       - $PWD/output:/root/output
       # X11 socket for enabling display of windows from inside the container
       - /tmp/.X11-unix:/tmp/.X11-unix
+      - /dev:/dev
 
     environment:
       # for enabling window display from inside the container
       - DISPLAY=${DISPLAY}
+      - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
+      - WAYLAND_DISPLAY=${WAYLAND_DISPLAY}
+      - QT_QPA_PLATFORM=xcb 
+      - NVIDIA_DRIVER_CAPABILITIES=all 
+      - NVIDIA_VISIBLE_DEVICES=all 
+      - QT_X11_NO_MITSHM=1 
+      - __GLX_VENDOR_LIBRARY_NAME=nvidia 
+
     # The following is needed for allowing 3D view window inside the container.
     # An nvidia GPU is needed. If no visualization is needed and you have no
     # nvidia GPU, this can be commented out.
+    privileged: true 
+    runtime: nvidia
     deploy:
       resources:
         reservations:
           devices:
             - driver: nvidia
-              count: 1
-              capabilities: [gpu, compute,utility,graphics]
+              capabilities: [gpu]
 
     # the following avoids to start this service if a specific profile is given in docker compose              
     profiles:
-      - ''
+      - systemcalib
 
 
   ## Apriltag coordinates extraction for system calibration
@@ -49,20 +61,30 @@ services:
       - $PWD/output:/root/output
       # X11 socket for enabling display of windows from inside the container
       - /tmp/.X11-unix:/tmp/.X11-unix
+      - /dev:/dev
 
     environment:
       # for enabling window display from inside the container
       - DISPLAY=${DISPLAY}
+      - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
+      - WAYLAND_DISPLAY=${WAYLAND_DISPLAY}
+      - QT_QPA_PLATFORM=xcb 
+      - NVIDIA_DRIVER_CAPABILITIES=all 
+      - NVIDIA_VISIBLE_DEVICES=all 
+      - QT_X11_NO_MITSHM=1 
+      - __GLX_VENDOR_LIBRARY_NAME=nvidia 
+
     # The following is needed for allowing 3D view window inside the container.
     # An nvidia GPU is needed. If no visualization is needed and you have no
     # nvidia GPU, this can be commented out.
+    privileged: true 
+    runtime: nvidia
     deploy:
       resources:
         reservations:
           devices:
             - driver: nvidia
-              count: 1
-              capabilities: [gpu, compute,utility,graphics]
+              capabilities: [gpu]
 
     # Don't use this service per default. Only use it in profile "apriltag_extraction"
     # e.g. with docker compose --profile apriltag_extraction up --build

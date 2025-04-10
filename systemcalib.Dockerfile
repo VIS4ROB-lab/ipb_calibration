@@ -62,12 +62,8 @@ COPY pyproject.toml .
 WORKDIR /root/calib
 RUN pip --no-cache-dir install -e .
 
-
-
 # =============================================================================
 # Now do the actual work: Start the camera system and LiDAR calibration
 WORKDIR /root
-COPY entrypoint.bash /root/entrypoint.bash
-
-CMD /root/entrypoint.bash
-
+COPY entrypoint_systemcalib.bash /root/entrypoint_systemcalib.bash
+CMD /root/entrypoint_systemcalib.bash
