@@ -277,6 +277,8 @@ def parse_camera_data(apriltag_file, path_data):
 
         images = sorted(glob.glob(
             f'{folder}/*.png'))
+        num_images = len(images)
+        print('nr images:', num_images)
 
         for t, image in enumerate(tqdm.tqdm(images)):
             img = plt.imread(image)
@@ -334,7 +336,7 @@ def parse_camera_data(apriltag_file, path_data):
         print('\n\nNo camera models given in yaml file, assuming pinhole for all cameras.\n', flush=True)
         cam_is_pinhole = len(T_cami_cam0) * [True]
         
-    return imgpixel, indices, coords, observations, T_cami_cam0, image_sizes, cam_is_pinhole
+    return num_images, imgpixel, indices, coords, observations, T_cami_cam0, image_sizes, cam_is_pinhole
 
 ###################################################################################################
 # Init guess Camera intrinsics

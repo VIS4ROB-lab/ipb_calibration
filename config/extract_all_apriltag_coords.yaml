@@ -28,7 +28,7 @@ walls:
     # The important thing here is that for parallel walls only one wall has to
     # appear inside the bounding box
     bounding_box: 
-    -   0
+    -   1
     - -10
     - -10
     -  10
@@ -45,7 +45,7 @@ walls:
     - -10
     - -10
     - -10
-    -   0
+    -  -1
     -  10
     -  10
 
@@ -61,7 +61,7 @@ walls:
     # appear inside the bounding box
     bounding_box: 
     - -10
-    -   0
+    -   1
     - -10
     -  10
     -  10
@@ -78,7 +78,7 @@ walls:
     - -10
     - -10
     -  10
-    -   0
+    -  -1
     -  10
     
   wallZpositive:
@@ -94,7 +94,7 @@ walls:
     bounding_box: 
     - -10
     - -10
-    -   0
+    -   1
     -  10
     -  10
     -  10

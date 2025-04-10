@@ -55,11 +55,11 @@ def main(apriltag_file,
     print(10*"-", experiment_name, 10*"-")
     print(30*"-")
     pcd_map = o3d.io.read_point_cloud(faro_file)
-    imgpixel, indices, coords, observations, T_cami_cam_yaml, img_sizes, cam_is_pinhole = pp.parse_camera_data(
+    num_images, imgpixel, indices, coords, observations, T_cami_cam_yaml, img_sizes, cam_is_pinhole = pp.parse_camera_data(
         apriltag_file, path_data)
-
+    
     init_k, init_coeff = pp.estimate_initial_k(
-        observations, cam_is_pinhole, max_num_images=10, image_size=img_sizes)
+        observations, cam_is_pinhole, max_num_images=num_images, image_size=img_sizes)
     init_K = [np.array([[k_[2], 0, k_[0]],
                         [0, k_[3], k_[1]],
                         [0, 0, 1]]) for k_ in init_k]
